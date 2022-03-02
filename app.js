@@ -7,7 +7,11 @@ const util = require('./util');
 console.log(chalk.bold.yellow('Enter your name, age and email using login command!'));
 
 yargs.command('login', 'Enter name, age and email', () => {
-  util.login(yargs.argv);
+  if (yargs.argv && yargs.argv.name) {
+    util.login(yargs.argv);
+  } else {
+    util.getRandomUser();
+  }
 });
 
 yargs.parse();

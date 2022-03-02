@@ -12,6 +12,7 @@
   "author": "Sundar Raman Sudharsanam",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.0",
     "chalk": "^4.1.2",
     "validator": "^13.7.0",
     "yargs": "^17.3.1"

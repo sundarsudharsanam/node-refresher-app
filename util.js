@@ -2,6 +2,7 @@ const api = require('./api').api;
 
 const chalk = require('chalk');
 const validator = require('validator');
+const axios = require('axios');
 
 // Async - Await
 const ageApi = async (age) => {
@@ -48,4 +49,36 @@ const login = ({ name = '', age = '', email = '' }) => {
   }
 };
 
-module.exports = { login };
+const getRandomNumber = (min, max) => {
+  /**
+   * Example: min 5, max 12
+   * Math.random() -- random number between 0 and 1
+   * Math.random() * diff -- random number between 0 and diff, in this case, 0 and 7
+   * Math.floor() -- returns integer value
+   * + min -- random number between min and max, in this case, 5 and 12
+   */
+
+  const diff = max - min;
+  return Math.floor(Math.random() * diff) + min;
+};
+
+const getRandomUser = () => {
+  axios.get('https://jsonplaceholder.typicode.com/users')
+    .then(response => {
+      if (response && response.data) {
+        const users = response.data;
+        const userIndex = getRandomNumber(0, users.length);
+        const user = users[userIndex];
+        console.log(chalk.bold.yellow(`Random user :: ${user.id}. ${user.name} | ${user.email}`));
+
+        login({ name: user.name, age: getRandomNumber(18, 75), email: user.email });
+      } else {
+        console.log(chalk.bgRed('Logging off... Unable to connect to server!'));
+      }
+    })
+    .catch(err => {
+      console.log(chalk.bgRed('Logging off... Unable to connect to server!'));
+    });
+}
+
+module.exports = { login, getRandomUser };
